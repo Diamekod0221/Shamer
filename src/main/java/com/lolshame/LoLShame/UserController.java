@@ -33,19 +33,17 @@ public class UserController {
     public ResponseEntity<ApiCallResponse> processRiotApiCall(@PathVariable String summonerId) throws IOException {
         NewApiCall configuredInput = configureInput(summonerId);
         boolean isSaved = checkIfSaved(configuredInput);
-        if(isSaved){
+        if (isSaved) {
             return ResponseEntity.ok(fetchSummonerFromDB(configuredInput));
-        }
-        else{
+        } else {
             return fetchFromApi(configuredInput);
         }
     }
 
-    private NewApiCall configureInput (String summonerId){
-        try{
+    private NewApiCall configureInput(String summonerId) {
+        try {
             return processInput(summonerId);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Invalid summoner name, can't call. Summoner: "
                     + summonerId + " was requested but not found."
@@ -53,28 +51,38 @@ public class UserController {
         }
     }
 
-    private NewApiCall processInput(String summonerId){
+    private NewApiCall processInput(String summonerId) {
         NewApiCall apiCall = new NewApiCall(summonerId);
         NewApiCallValidator.validate(apiCall);
         return apiCall;
     }
 
-    private boolean checkIfSaved(NewApiCall configuredInput){
+    private boolean checkIfSaved(NewApiCall configuredInput) {
         //todo: write select and check from db
     }
 
-    private ResponseEntity<ApiCallResponse> fetchFromApi(NewApiCall configuredInput){
-        ApiCallEntity callEntity = createApiCallEntity(configuredInput);
+    private ApiCallResponse fetchSummonerFromDB(NewApiCall configuredInput) {
+        //todo: write db fetcher
+
+    }
+
+    private ResponseEntity<ApiCallResponse> fetchFromApi(NewApiCall configuredInput) {
+        ApiCallEntity callEntity = new ApiCallEntity(configuredInput);
         String openMeteoPayload = callRiotApi(callEntity);
         ApiCallResponse processedApiResponse = processApiResponse(openMeteoPayload);
 
         return ResponseEntity.ok(processedApiResponse);
     }
 
-    private ApiCallResponse fetchSummonerFromDB(NewApiCall configuredInput){
-        //todo: write db fetcher
 
-    }
+    private String
+}
+
+
+
+
+
+
 
 
 

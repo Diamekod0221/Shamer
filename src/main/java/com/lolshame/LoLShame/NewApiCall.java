@@ -1,15 +1,13 @@
 package com.lolshame.LoLShame;
 
-//Todo: fill data class
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public record NewApiCall(String summonerId) {
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-public class NewApiCall {
 
-    private String summonerId;
+    public void validate(){
+
+        if(summonerId.isBlank() || summonerId.length() > 15){
+            throw new IllegalArgumentException("Not a valid summoner name: " + summonerId);
+        }
+    }
 }
