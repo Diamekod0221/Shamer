@@ -1,6 +1,5 @@
 package com.lolshame.LoLShame;
 
-
 public record NewApiCall(String summonerId) {
 
 

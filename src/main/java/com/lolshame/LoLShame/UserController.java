@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -26,11 +27,13 @@ public class UserController {
     private final MatchRepository matchRepository;
     @Autowired
     private final PlayerRepository playerRepository;
+    @Autowired
+    private final RiotApiService apiService;
 
 
     @GetMapping(path = "/get-summoner/{summonerId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiCallResponse> processRiotApiCall(@PathVariable String summonerId) throws IOException {
+    public ResponseEntity<MatchResponse> processRiotApiCall(@PathVariable String summonerId) throws IOException {
         NewApiCall configuredInput = configureInput(summonerId);
         boolean isSaved = checkIfSaved(configuredInput);
         if (isSaved) {
@@ -61,17 +64,19 @@ public class UserController {
         //todo: write select and check from db
     }
 
-    private ApiCallResponse fetchSummonerFromDB(NewApiCall configuredInput) {
+    private MatchResponse fetchSummonerFromDB(NewApiCall configuredInput) {
         //todo: write db fetcher
 
     }
 
-    private ResponseEntity<ApiCallResponse> fetchFromApi(NewApiCall configuredInput) {
+    private ResponseEntity<MatchResponse> fetchFromApi(NewApiCall configuredInput) {
         ApiCallEntity callEntity = new ApiCallEntity(configuredInput);
-        String openMeteoPayload = callRiotApi(callEntity);
-        ApiCallResponse processedApiResponse = processApiResponse(openMeteoPayload);
+        List<Match> matchList = apiService.makeApiRequest(callEntity);
+        MatchProcessing processor = new MatchProcessing();
 
-        return ResponseEntity.ok(processedApiResponse);
+        List<MatchResponse> response = processor.extractMatchDetails(matchList);
+
+        return ResponseEntity.ok(response);
     }
 
 
