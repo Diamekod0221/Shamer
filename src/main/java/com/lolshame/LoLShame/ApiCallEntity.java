@@ -24,14 +24,14 @@ public class ApiCallEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    private NewApiCall summonerId;
+    private String summonerId;
 
     @CreatedDate
     private LocalDateTime timestamp;
 
     @Autowired
     public ApiCallEntity(NewApiCall summonerId){
-        this.summonerId = summonerId;
+        this.summonerId = summonerId.summonerId();
     }
 
 

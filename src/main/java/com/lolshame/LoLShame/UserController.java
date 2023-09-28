@@ -24,11 +24,7 @@ public class UserController {
 
 
     @Autowired
-    private final MatchRepository matchRepository;
-    @Autowired
-    private final PlayerRepository playerRepository;
-    @Autowired
-    private final RiotApiService apiService;
+    private final CoreService core;
 
 
     @GetMapping(path = "/get-summoner/{summonerId}",
@@ -62,25 +58,23 @@ public class UserController {
 
     private boolean checkIfSaved(NewApiCall configuredInput) {
         //todo: write select and check from db
+        return false;
     }
 
     private MatchResponse fetchSummonerFromDB(NewApiCall configuredInput) {
         //todo: write db fetcher
+        return null;
 
     }
 
+
     private ResponseEntity<MatchResponse> fetchFromApi(NewApiCall configuredInput) {
         ApiCallEntity callEntity = new ApiCallEntity(configuredInput);
-        List<Match> matchList = apiService.makeApiRequest(callEntity);
-        MatchProcessing processor = new MatchProcessing();
-
-        List<MatchResponse> response = processor.extractMatchDetails(matchList);
+        MatchResponse response = core.makeApiRequest(callEntity);
 
         return ResponseEntity.ok(response);
     }
 
-
-    private String
 }
 
 
@@ -96,4 +90,4 @@ public class UserController {
 
 
 
-}
+

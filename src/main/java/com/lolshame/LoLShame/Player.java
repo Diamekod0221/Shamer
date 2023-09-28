@@ -13,8 +13,13 @@ import lombok.Setter;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String playerName;
+    private Long DBid;
+    private String id;
+    private String accountId;
     private String puuid;
+    private String name;
+    private String profileIconId;
+    private Long revisionDate;
+    private Long summonerLevel;
 
 }
