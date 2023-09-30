@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +45,9 @@ public class RiotApiService {
 
     private final RestTemplate restTemplate;
 
-    public RiotApiService(RestTemplate restTemplate){
-        this.restTemplate = restTemplate;
+    @Autowired
+    public RiotApiService(RestTemplateBuilder builder){
+        this.restTemplate = builder.build();
     }
 
     /*todo: this has to call
@@ -87,8 +90,9 @@ public class RiotApiService {
         return matchesByPuuidApiURL +
                 puuid +
                 "/ids?" +
-                "start=" +
+                "startTime=" +
                 startTimestamp() +
+                "&start=0" +
                 "&count=" +
                 matchCount +
                 "&api_key=" +
@@ -102,7 +106,7 @@ public class RiotApiService {
 
         Instant sevenDaysAgo = Instant.now().minus(Duration.ofDays(7));
 
-        return Duration.between(matchlistStartInstant, sevenDaysAgo).toMillis();
+        return Duration.between(matchlistStartInstant, sevenDaysAgo).toSeconds();
     }
 
 

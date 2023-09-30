@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -24,7 +23,7 @@ public class UserController {
 
 
     @Autowired
-    private final CoreService core;
+    private final PlayerService playerService;
 
 
     @GetMapping(path = "/get-summoner/{summonerId}",
@@ -70,7 +69,7 @@ public class UserController {
 
     private ResponseEntity<MatchResponse> fetchFromApi(NewApiCall configuredInput) {
         ApiCallEntity callEntity = new ApiCallEntity(configuredInput);
-        MatchResponse response = core.makeApiRequest(callEntity);
+        MatchResponse response = playerService.makeApiRequest(callEntity);
 
         return ResponseEntity.ok(response);
     }
