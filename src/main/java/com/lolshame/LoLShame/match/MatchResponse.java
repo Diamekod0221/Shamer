@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.match;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

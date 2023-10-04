@@ -1,28 +1,19 @@
 package com.lolshame.LoLShame;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lolshame.LoLShame.player.Player;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.time.*;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static java.time.Period.between;
 
 @Slf4j
 @Service
@@ -50,20 +41,6 @@ public class RiotApiService {
         this.restTemplate = builder.build();
     }
 
-    /*todo: this has to call
-   https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}?api_key=RGAPI-e77791a8-01e1-4e4f-91b1-521851506a44
-   filter body for puuid, then call
-   https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/
-   {puuid}}/ids?start=0&count=20&api_key=RGAPI-e77791a8-01e1-4e4f-91b1-521851506a44
-   ,get a list of match ids
-   and call
-   https://europe.api.riotgames.com/lol/match/v5/matches/{match_id}
-
-   and extract needed data (check what falgs to use)
-     */
-
-
-
     public Player fetchPlayerByID(String summonerId){
         return restTemplate.getForObject(summonerApiURL(summonerId), Player.class);
     }
@@ -80,12 +57,9 @@ public class RiotApiService {
                         new ParameterizedTypeReference<List<String>>(){}
                 )
                 .getBody();
-
     }
 
     private String matchPuuidApiURL(String puuid){
-        //https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/
-        //{puuid}}/ids?start=0&count=20&api_key=RGAPI-e77791a8-01e1-4e4f-91b1-521851506a44
 
         return matchesByPuuidApiURL +
                 puuid +
@@ -110,30 +84,25 @@ public class RiotApiService {
     }
 
 
+    public String fetchMatchData(String matchId) {
+        HttpEntity<String> requestEntity = this.setUpRequestEntity();
 
-    public Optional<Match> fetchMatchData(String matchId) {
-        ResponseEntity<String> matchResponse = restTemplate.getForEntity(matchIDUrl(matchId), String.class);
-        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        try {
-            return Optional.of(mapper.readValue(matchResponse.getBody(), Match.class));
-        }
-         catch (IOException e){
-            log.error("Deserialization failed on matchId: " + matchId + "\n falling back.");
-            return Optional.empty();
-        }
+        return restTemplate.exchange(matchIDUrl(matchId), HttpMethod.GET, requestEntity, String.class).getBody();
     }
 
-
-    //https://europe.api.riotgames.com/lol/match/v5/matches/{match_id}
     private String matchIDUrl(String matchId){
         return matchesByIDApiURL
                 + matchId +
-                "&api_key=" +
+                "?api_key=" +
                 apiKey;
     }
 
-
+    //some weird shit for riot api request formatting
+    private HttpEntity<String> setUpRequestEntity(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Accept","*/*");
+        return new HttpEntity<>(headers);
+    }
 
 
 

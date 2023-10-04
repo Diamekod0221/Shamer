@@ -1,5 +1,6 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.match;
 
+import com.lolshame.LoLShame.player.Player;
 import jakarta.persistence.*;
 
 @Entity

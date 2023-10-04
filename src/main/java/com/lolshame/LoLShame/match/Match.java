@@ -1,18 +1,20 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.match;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
-
-@Data
 @Entity
+@Data
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@ToString
 public class Match {
 
     @Id
@@ -23,6 +25,11 @@ public class Match {
 
     private Long gameStartTimestamp;
 
-    private boolean win;
+    private List<String> teamBlue;
+
+    private List<String> teamRed;
+
+    private Map<String, PlayerPerformance> playerStats;
+
 
 }

@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.player;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

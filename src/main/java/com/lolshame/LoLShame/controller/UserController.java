@@ -1,5 +1,7 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.controller;
 
+import com.lolshame.LoLShame.match.MatchResponse;
+import com.lolshame.LoLShame.player.PlayerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

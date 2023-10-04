@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.match;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

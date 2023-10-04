@@ -1,5 +1,10 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.player;
 
+import com.lolshame.LoLShame.controller.ApiCallEntity;
+import com.lolshame.LoLShame.RiotApiService;
+import com.lolshame.LoLShame.match.Match;
+import com.lolshame.LoLShame.match.MatchResponse;
+import com.lolshame.LoLShame.match.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
