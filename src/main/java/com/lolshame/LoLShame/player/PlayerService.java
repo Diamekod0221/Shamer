@@ -5,6 +5,7 @@ import com.lolshame.LoLShame.RiotApiService;
 import com.lolshame.LoLShame.match.Match;
 import com.lolshame.LoLShame.match.MatchResponse;
 import com.lolshame.LoLShame.match.MatchService;
+import com.lolshame.LoLShame.player.results.PlayerResultsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class PlayerService {
 
     @Autowired
     private RiotApiService apiService;
+
+    @Autowired
+    private PlayerResultsService playerResultsService;
 
     public MatchResponse makeApiRequest(ApiCallEntity apiCall){
         return this.produceShamingResponse(getMatchList(getPlayerPuuid(apiCall)));

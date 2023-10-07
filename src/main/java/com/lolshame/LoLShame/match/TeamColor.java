@@ -12,4 +12,18 @@ public enum TeamColor {
                     color);
         }
     }
+
+    public static TeamColor numericValueOf(String string){
+        return numericValueOf(Integer.parseInt(string));
+    }
+
+    public static TeamColor numericValueOf(int value){
+        if(value == 100){
+            return BLUE;
+        }
+        if(value == 200){
+            return RED;
+        }
+        throw new IllegalArgumentException("can't assign team to value: " + value);
+    }
 }

@@ -1,5 +1,6 @@
 package com.lolshame.LoLShame.match;
 
+import com.lolshame.LoLShame.player.results.PlayerMatchDetails;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Match {
 
     @Id
@@ -25,11 +27,7 @@ public class Match {
 
     private Long gameStartTimestamp;
 
-    private List<String> teamBlue;
-
-    private List<String> teamRed;
-
-    private Map<String, PlayerPerformance> playerStats;
+    private Map<String, PlayerMatchDetails> playerStats;
 
 
 }
