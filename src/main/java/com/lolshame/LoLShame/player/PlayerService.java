@@ -25,26 +25,33 @@ public class PlayerService {
     @Autowired
     private PlayerResultsService playerResultsService;
 
-    public MatchResponse makeApiRequest(ApiCallEntity apiCall){
+    public MatchResponse makeApiRequest(ApiCallEntity apiCall) {
         return this.produceShamingResponse(getMatchList(getPlayerPuuid(apiCall)));
-
     }
 
-    private String getPlayerPuuid(ApiCallEntity callEntity){
-        return this.fetchPlayerByID(callEntity).getPuuid();
+
+    private MatchResponse produceShamingResponse(List<Match> matchList){
+        return new MatchResponse(matchList);
     }
 
     private List<Match> getMatchList(String puuid){
         return matchService.getMatchList(puuid);
     }
 
-    private MatchResponse produceShamingResponse(List<Match> matchList){
-        return new MatchResponse(matchList);
+
+    private String getPlayerPuuid(ApiCallEntity callEntity){
+        return this.fetchPlayerByID(callEntity).getPuuid();
     }
 
     public Player fetchPlayerByID(ApiCallEntity callEntity){
         return apiService.fetchPlayerByID(callEntity.getSummonerId());
     }
+
+
+
+
+
+
 
 
 
