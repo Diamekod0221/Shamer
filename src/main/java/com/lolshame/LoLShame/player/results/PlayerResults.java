@@ -9,11 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 public class PlayerResults {
-    private double killParticipation;
+    private final double killParticipation;
 
-    private long goldAdvantageAt15;
+    private final long goldAdvantageAt15;
 
-    private double visionScoreAdvantageLaneOpponent;
+    private final double visionScoreAdvantageLaneOpponent;
 
-    private boolean win;
+    private final boolean win;
 }

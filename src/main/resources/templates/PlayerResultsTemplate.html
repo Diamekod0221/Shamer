@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Results</title>
+</head>
+<body>
+<h1>Player Results</h1>
+<p>Kill Participation: <span th:text="${playerResults.killParticipation}"></span></p>
+<p>Gold Advantage at 15: <span th:text="${playerResults.goldAdvantageAt15}"></span></p>
+<p>Vision Score Advantage Lane Opponent: <span th:text="${playerResults.visionScoreAdvantageLaneOpponent}"></span></p>
+<p>Win: <span th:text="${playerResults.win} ? 'Yes' : 'No'"></span></p>
+</body>
+</html>

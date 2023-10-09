@@ -3,6 +3,7 @@ package com.lolshame.LoLShame.player.results;
 import com.lolshame.LoLShame.match.Match;
 import com.lolshame.LoLShame.match.TeamColor;
 import com.lolshame.LoLShame.player.Player;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +12,9 @@ import java.util.Map;
 import java.util.stream.Collector;
 
 @Component
+@AllArgsConstructor
 public class PlayerResultsService {
 
-    @Autowired
     ResultsCalculator calculator;
 
     public PlayerResults providePlayerResults(List<Match> matchList, Player player){

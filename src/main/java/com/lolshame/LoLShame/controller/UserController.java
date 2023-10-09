@@ -2,12 +2,16 @@ package com.lolshame.LoLShame.controller;
 
 import com.lolshame.LoLShame.match.MatchResponse;
 import com.lolshame.LoLShame.player.PlayerService;
+import com.lolshame.LoLShame.player.results.PlayerResults;
+import com.lolshame.LoLShame.player.results.PlayerResultsService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +22,7 @@ import java.io.IOException;
 
 @Slf4j
 @AllArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/api-call-endpoint")
 
 public class UserController {
@@ -28,17 +32,49 @@ public class UserController {
     private final PlayerService playerService;
 
 
-    @GetMapping(path = "/get-summoner/{summonerId}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MatchResponse> processRiotApiCall(@PathVariable String summonerId) throws IOException {
+    /*@GetMapping(path = "/get-summoner/{summonerId}")
+    public ResponseEntity<PlayerResults> processRiotApiCall(@PathVariable String summonerId) throws IOException {
         NewApiCall configuredInput = configureInput(summonerId);
         boolean isSaved = checkIfSaved(configuredInput);
+
         if (isSaved) {
             return ResponseEntity.ok(fetchSummonerFromDB(configuredInput));
         } else {
             return fetchFromApi(configuredInput);
         }
     }
+    */
+
+    @GetMapping(path = "/get-summoner/{summonerId}")
+    public String processRiotApiCallFront(@PathVariable String summonerId, Model model) throws IOException {
+        /*NewApiCall configuredInput = configureInput(summonerId);
+        boolean isSaved = checkIfSaved(configuredInput);
+
+
+
+        if (isSaved) {
+            fetchSummonerFromDB(configuredInput);
+            return "results";
+        } else {
+
+            PlayerResults playerResults = fetchFromApi(configuredInput);
+
+            */
+        PlayerResults playerResults = PlayerResults.builder()
+                .killParticipation(75.5)
+                .goldAdvantageAt15(2500)
+                .visionScoreAdvantageLaneOpponent(3.5)
+                .win(true)
+                .build();
+            model.addAttribute("playerResults", playerResults);
+            return "PlayerResultsTemplate";
+
+        //}
+
+
+    }
+
+
 
     private NewApiCall configureInput(String summonerId) {
         try {
@@ -62,18 +98,16 @@ public class UserController {
         return false;
     }
 
-    private MatchResponse fetchSummonerFromDB(NewApiCall configuredInput) {
+    private PlayerResults fetchSummonerFromDB(NewApiCall configuredInput) {
         //todo: write db fetcher
         return null;
 
     }
 
 
-    private ResponseEntity<MatchResponse> fetchFromApi(NewApiCall configuredInput) {
+    private PlayerResults fetchFromApi(NewApiCall configuredInput) {
         ApiCallEntity callEntity = new ApiCallEntity(configuredInput);
-        MatchResponse response = playerService.makeApiRequest(callEntity);
-
-        return ResponseEntity.ok(response);
+        return playerService.makeApiRequest(callEntity);
     }
 
 }

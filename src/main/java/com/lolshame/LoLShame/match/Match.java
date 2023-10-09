@@ -10,7 +10,6 @@ import lombok.*;
 import java.util.List;
 import java.util.Map;
 
-@Entity
 @Data
 @NoArgsConstructor
 @Builder
@@ -29,5 +28,7 @@ public class Match {
 
     private Map<String, PlayerMatchDetails> playerStats;
 
-
+    public Map<String, PlayerMatchDetails> getPlayerStats() {
+        return Map.copyOf(playerStats);
+    }
 }
