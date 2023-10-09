@@ -1,13 +1,15 @@
 package com.lolshame.LoLShame.player.results;
 
-import com.lolshame.LoLShame.match.TeamColor;
+import com.lolshame.LoLShame.match.TeamColorEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class PlayerMatchDetails {
 
     private int perfectGame;
@@ -22,7 +24,7 @@ public class PlayerMatchDetails {
 
     private PlayedLaneEnum lane;
 
-    private TeamColor team;
+    private TeamColorEnum team;
 
 }
 

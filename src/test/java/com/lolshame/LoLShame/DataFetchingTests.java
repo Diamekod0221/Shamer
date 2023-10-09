@@ -37,7 +37,7 @@ public class DataFetchingTests {
         builder = new RestTemplateBuilder();
         riotApiService = new RiotApiService(builder);
 
-        ReflectionTestUtils.setField(riotApiService, "apiKey", "RGAPI-5fdf618a-4391-4339-a96c-9846a5e00009");
+        ReflectionTestUtils.setField(riotApiService, "apiKey", "RGAPI-ea60b86d-9b98-49a4-930f-77af85b862b2");
         ReflectionTestUtils.setField(riotApiService, "summonerByNameApiURL", "https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/");
         ReflectionTestUtils.setField(riotApiService, "matchesByPuuidApiURL", "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/");
         ReflectionTestUtils.setField(riotApiService, "matchesByIDApiURL", "https://europe.api.riotgames.com/lol/match/v5/matches/");

@@ -1,10 +1,9 @@
 package com.lolshame.LoLShame.player.results;
 
 import com.lolshame.LoLShame.match.Match;
-import com.lolshame.LoLShame.match.TeamColor;
+import com.lolshame.LoLShame.match.TeamColorEnum;
 import com.lolshame.LoLShame.player.Player;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class PlayerResultsService {
     private String findLaneOpponent(String playerPuuid, Match match){
         PlayerMatchDetails playerDetails = match.getPlayerStats().get(playerPuuid);
         PlayedLaneEnum playerLane = playerDetails.getLane();
-        TeamColor playerTeam = playerDetails.getTeam();
+        TeamColorEnum playerTeam = playerDetails.getTeam();
 
         return match.getPlayerStats().entrySet().stream()
                 .filter( v -> !(v.getValue().getTeam() == playerTeam))

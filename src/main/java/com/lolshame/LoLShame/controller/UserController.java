@@ -31,47 +31,20 @@ public class UserController {
     @Autowired
     private final PlayerService playerService;
 
-
-    /*@GetMapping(path = "/get-summoner/{summonerId}")
-    public ResponseEntity<PlayerResults> processRiotApiCall(@PathVariable String summonerId) throws IOException {
-        NewApiCall configuredInput = configureInput(summonerId);
-        boolean isSaved = checkIfSaved(configuredInput);
-
-        if (isSaved) {
-            return ResponseEntity.ok(fetchSummonerFromDB(configuredInput));
-        } else {
-            return fetchFromApi(configuredInput);
-        }
-    }
-    */
-
     @GetMapping(path = "/get-summoner/{summonerId}")
     public String processRiotApiCallFront(@PathVariable String summonerId, Model model) throws IOException {
-        /*NewApiCall configuredInput = configureInput(summonerId);
+        NewApiCall configuredInput = configureInput(summonerId);
         boolean isSaved = checkIfSaved(configuredInput);
-
-
 
         if (isSaved) {
             fetchSummonerFromDB(configuredInput);
             return "results";
         } else {
-
             PlayerResults playerResults = fetchFromApi(configuredInput);
 
-            */
-        PlayerResults playerResults = PlayerResults.builder()
-                .killParticipation(75.5)
-                .goldAdvantageAt15(2500)
-                .visionScoreAdvantageLaneOpponent(3.5)
-                .win(true)
-                .build();
             model.addAttribute("playerResults", playerResults);
             return "PlayerResultsTemplate";
-
-        //}
-
-
+        }
     }
 
 

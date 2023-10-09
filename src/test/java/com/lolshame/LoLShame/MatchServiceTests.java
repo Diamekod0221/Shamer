@@ -2,19 +2,17 @@ package com.lolshame.LoLShame;
 
 import com.lolshame.LoLShame.match.Match;
 import com.lolshame.LoLShame.match.MatchService;
+import com.lolshame.LoLShame.match.TeamColorEnum;
+import com.lolshame.LoLShame.player.results.PlayedLaneEnum;
 import com.lolshame.LoLShame.player.results.PlayerMatchDetails;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -70,8 +68,8 @@ public class MatchServiceTests {
     }
 
     @Test
-    public void testGetPlayerPerformance(){
-        String input = String.valueOf(new File("src/test/resources/playerStatsSubstring.txt"));
+    public void testGetPlayerPerformance() throws IOException {
+        String input = new String(Files.readAllBytes(Paths.get("src/test/resources/player-stats-substring.json")));
 
         PlayerMatchDetails performance = new PlayerMatchDetails();
 
@@ -80,6 +78,8 @@ public class MatchServiceTests {
         performance.setGoldEarned(14611);
         performance.setVisionScoreAdvantageLaneOpponent(-0.028629302978515625);
         performance.setWin(false);
+        performance.setLane(PlayedLaneEnum.BOTTOM);
+        performance.setTeam(TeamColorEnum.BLUE);
 
         assertEquals(performance, matchService.getPlayerPerformanceFromSubstring(input));
 
@@ -96,8 +96,16 @@ public class MatchServiceTests {
         assertEquals(expected.getMatchId(), actual.getMatchId());
         assertEquals(expected.getGameStartTimestamp(), actual.getGameStartTimestamp());
 
-        Assertions.assertTrue(collectionEqualUnordered(expected.getPlayerStats().values(), actual.getPlayerStats().values()));
-        Assertions.assertTrue(collectionEqualUnordered(expected.getPlayerStats().values(), actual.getPlayerStats().values()));
+        for (String actualKey : actual.getPlayerStats().keySet()) {
+            for (Map.Entry<String, PlayerMatchDetails> e : expected.getPlayerStats().entrySet()) {
+                if (Objects.equals(e.getKey(), actualKey))
+                    System.out.println("Expected key: " + e.getKey() + " Actual key: " + actualKey);
+                    assertEquals(e.getValue(), actual.getPlayerStats().get(actualKey));
+            }
+        }
+
+        //Assertions.assertTrue(collectionEqualUnordered(expected.getPlayerStats().values(), actual.getPlayerStats().values()));
+        //Assertions.assertTrue(collectionEqualUnordered(expected.getPlayerStats().values(), actual.getPlayerStats().values()));
     }
 
     private Match buildTestMatch(){
@@ -114,23 +122,100 @@ public class MatchServiceTests {
     private Map<String, PlayerMatchDetails> getTestPlayerStats(){
                 return Map.of(
                         "9SCCXakekcNPVP37x4XR5lqTThQlSwsc929LzzLrVQF4tf_tifu2apqVq9THOmYRcdEBtgaTet4IIw=",
-                        new PlayerMatchDetails(0, 0.7619047619047619, 14611, -0.028629302978515625, false),
+                        new PlayerMatchDetails(
+                                0,
+                                0.7619047619047619,
+                                14611,
+                                -0.028629302978515625,
+                                false,
+                                PlayedLaneEnum.BOTTOM,
+                                TeamColorEnum.BLUE),
                         "LrzhRzwlynzi77bimwDBjBmhyBN4jajWOBN38Sw2HKEBNMtesEa_5gtg9NCTcbpgSyJRg4d5NYShRA",
-                        new PlayerMatchDetails(0, 0.6190476190476191, 9643, 0.5453664064407349, false),
+                        new PlayerMatchDetails(
+                                0,
+                                0.6190476190476191,
+                                9643,
+                                0.5453664064407349,
+                                false,
+                                PlayedLaneEnum.TOP,
+                                TeamColorEnum.BLUE
+                                ),
                         "DqjN3I0N7JRvux1sW2RvlI-OJI7FWDzlrLw0v5a2tTT09Trt8PIUMqBrmW4_DLHZzvkwt-hYYBl4Xw=",
-                        new PlayerMatchDetails(0, 0.47619047619047616, 6765, -0.6462412476539612, false),
+                        new PlayerMatchDetails(
+                                0,
+                                0.47619047619047616,
+                                6765,
+                                -0.6462412476539612,
+                                false,
+                                PlayedLaneEnum.MIDDLE,
+                                TeamColorEnum.BLUE),
                         "nmKSVsE7N5kK1Yq0OHunj0IKvnrC1MOy4SbpukwM8Rr-E7EAZroL8BIEKi0Zu8GOdnqxumEq5aBoHQ=",
-                        new PlayerMatchDetails(0, 0.45, 12581, 0.4806363582611084, false),
+                        new PlayerMatchDetails(
+                                0,
+                                0.45,
+                                12581,
+                                0.4806363582611084,
+                                false,
+                                PlayedLaneEnum.BOTTOM,
+                                TeamColorEnum.BLUE),
                         "SB4hBc5zf5zXlJ7oGnMFyfqqw_nfm1EbIuDrgNF6pk_jn0ThTQHtVd7-8Uf7fTZIB96ta1AAoHxWsg=",
-                        new PlayerMatchDetails(0, 0.42857142857142855, 7666, -0.3246147632598877, false),
+                        new PlayerMatchDetails(
+                                0,
+                                0.42857142857142855,
+                                7666,
+                                -0.3246147632598877,
+                                false,
+                                PlayedLaneEnum.UTILITY,
+                                TeamColorEnum.RED
+                                ),
                         "iI5fVkIJPmBUaX3wBIIFJlqIHB2bcnSPH8PEu03_vLXJ6tGBRtTRniGXwXgbySPozLYsFuEQEr310A=",
-                        new PlayerMatchDetails(0, 0.7142857142857143, 5764, -0.5763092637062073, false),
+                        new PlayerMatchDetails(0,
+                                0.7142857142857143,
+                                5764,
+                                -0.5763092637062073,
+                                true,
+                                PlayedLaneEnum.TOP,
+                                TeamColorEnum.RED
+                                ),
                         "N4avvF-FhEzW0XpIQX_EbLrQvey6nuP73jgyq892ZgXl-mJPihGLz4cxrtUWaWLO1fTt6OPSNxCnnA=",
-                        new PlayerMatchDetails(0, 0.1, 9227, -0.3529042601585388, false),
+                        new PlayerMatchDetails(0,
+                                0.1,
+                                9227,
+                                -0.3529042601585388,
+                                true,
+                                PlayedLaneEnum.JUNGLE,
+                                TeamColorEnum.RED
+                                ),
                         "p6zWi6p8bVzilHeKwroXl5zBPl1KfULfkeGfAip-3O7LDJcdUCYVcY9ehDPQVZ9mYHYo9esE5jYmDA=",
-                        new PlayerMatchDetails(0, 0.4, 10992, 1.8267850875854492, false),
+                        new PlayerMatchDetails(
+                                0,
+                                0.4,
+                                10992,
+                                1.8267850875854492,
+                                true,
+                                PlayedLaneEnum.MIDDLE,
+                                TeamColorEnum.RED
+                                ),
                         "-EoA2BgNZeAQ_B_XIXx8Ckfzih1TEqAoeRiCVwi26iV0j6SCpqGR66ZTVO6M9JY461RDaG64sI4Rxg=",
-                        new PlayerMatchDetails(0, 0.575, 15618, 0.029473066329956055, false)
+                        new PlayerMatchDetails(
+                                0,
+                                0.575,
+                                15618,
+                                0.029473066329956055,
+                                true,
+                                PlayedLaneEnum.BOTTOM,
+                                TeamColorEnum.RED
+                                ),
+                        "jCoKnA8wooFNNN519eVRsHiUMQA2r_eEwuE1Lxc3KaXwXDREB-jxxvqHDuKJUGxGDyHLWq24fJsGjA",
+                        new PlayerMatchDetails(
+                                0,
+                                0.475,
+                                8863,
+                                1.3602120876312256,
+                                true,
+                                PlayedLaneEnum.UTILITY,
+                                TeamColorEnum.RED
+                        )
                 );
     }
 

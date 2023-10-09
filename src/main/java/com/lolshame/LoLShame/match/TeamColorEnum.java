@@ -1,10 +1,10 @@
 package com.lolshame.LoLShame.match;
 
-public enum TeamColor {
+public enum TeamColorEnum {
     BLUE,
     RED;
 
-    public static String toStringVal(TeamColor color){
+    public static String toStringVal(TeamColorEnum color){
         switch (color){
             case RED -> { return "200";}
             case BLUE -> { return "100";}
@@ -13,11 +13,11 @@ public enum TeamColor {
         }
     }
 
-    public static TeamColor numericValueOf(String string){
+    public static TeamColorEnum numericValueOf(String string){
         return numericValueOf(Integer.parseInt(string));
     }
 
-    public static TeamColor numericValueOf(int value){
+    public static TeamColorEnum numericValueOf(int value){
         if(value == 100){
             return BLUE;
         }

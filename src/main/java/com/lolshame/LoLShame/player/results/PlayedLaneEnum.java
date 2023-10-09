@@ -3,7 +3,7 @@ package com.lolshame.LoLShame.player.results;
 public enum PlayedLaneEnum {
     TOP,
     JUNGLE,
-    MID,
+    MIDDLE,
     BOTTOM,
-    SUPPORT
+    UTILITY
 }

@@ -79,7 +79,7 @@ public class MatchService {
         index = indexEnd;
 
 
-        for(int i = 0; i <9; i++){
+        for(int i = 0; i <10; i++){
             indexEnd =  response.indexOf("allInPings", index + 1);
             if(isValidIndex(indexEnd)){
                 playerSubstrings.add(response.substring(index, indexEnd));
@@ -109,9 +109,9 @@ public class MatchService {
         details.setKillParticipation(Double.parseDouble(parse("killParticipation", substring)));
         details.setGoldEarned(Long.parseLong(parse("goldEarned", substring)));
         details.setVisionScoreAdvantageLaneOpponent(Double.parseDouble(parse("visionScoreAdvantageLaneOpponent", substring)));
-        details.setWin(Boolean.getBoolean(parse("win", substring)));
-        details.setLane(PlayedLaneEnum.valueOf(parse("lane", substring)));
-        details.setTeam(TeamColor.numericValueOf(parse("teamId", substring)));
+        details.setWin(Boolean.parseBoolean(parse("win", substring)));
+        details.setLane(PlayedLaneEnum.valueOf(parse("individualPosition", substring)));
+        details.setTeam(TeamColorEnum.numericValueOf(parse("teamId", substring)));
 
         return details;
     }
