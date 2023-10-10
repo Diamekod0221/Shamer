@@ -64,7 +64,8 @@ public class RiotApiService {
         return matchesByPuuidApiURL +
                 puuid +
                 "/ids?" +
-                "startTime=" +
+                "type=ranked" +
+                "&startTime=" +
                 startTimestamp() +
                 "&start=0" +
                 "&count=" +

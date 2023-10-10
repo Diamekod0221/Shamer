@@ -27,8 +27,6 @@ public class PlayerService {
 
     private PlayerResultsService playerResultsService;
 
-
-
     public PlayerResults makeApiRequest(ApiCallEntity apiCall) {
         Player player = fetchPlayerByID(apiCall);
 

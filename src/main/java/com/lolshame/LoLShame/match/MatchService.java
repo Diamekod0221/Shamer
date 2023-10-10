@@ -3,6 +3,7 @@ package com.lolshame.LoLShame.match;
 import com.lolshame.LoLShame.RiotApiService;
 import com.lolshame.LoLShame.player.results.PlayedLaneEnum;
 import com.lolshame.LoLShame.player.results.PlayerMatchDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class MatchService {
 
     @Autowired
@@ -41,8 +43,11 @@ public class MatchService {
         Long timestamp = Long.parseLong(parse("gameStartTimestamp", response));
 
         List<String> playerSubstrings = extractPlayerSubstrings(response);
+        log.info("Extracted player substrings for matchId: "+ matchId );
 
         Map<String, PlayerMatchDetails> playerPerformanceStrings = computePlayerPerformanceMap(playerSubstrings);
+
+        log.info("Successfully parsed data for matchId: " + matchId);
 
         return Match.builder()
                 .matchId(matchId)
@@ -83,11 +88,13 @@ public class MatchService {
             indexEnd =  response.indexOf("allInPings", index + 1);
             if(isValidIndex(indexEnd)){
                 playerSubstrings.add(response.substring(index, indexEnd));
+                index = indexEnd;
             }
             else{
                 playerSubstrings.add(response.substring(index));
+                break;
             }
-            index = indexEnd;
+
         }
         return playerSubstrings;
     }

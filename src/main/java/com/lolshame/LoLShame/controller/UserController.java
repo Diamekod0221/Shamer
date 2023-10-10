@@ -23,7 +23,7 @@ import java.io.IOException;
 @Slf4j
 @AllArgsConstructor
 @Controller
-@RequestMapping("/api-call-endpoint")
+@RequestMapping("/user-api")
 
 public class UserController {
 
@@ -32,7 +32,7 @@ public class UserController {
     private final PlayerService playerService;
 
     @GetMapping(path = "/get-summoner/{summonerId}")
-    public String processRiotApiCallFront(@PathVariable String summonerId, Model model) throws IOException {
+    public String processRiotApiCallFront(@PathVariable String summonerId, Model model){
         NewApiCall configuredInput = configureInput(summonerId);
         boolean isSaved = checkIfSaved(configuredInput);
 
