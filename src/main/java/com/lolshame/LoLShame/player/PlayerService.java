@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -27,14 +28,19 @@ public class PlayerService {
 
     private PlayerResultsService playerResultsService;
 
-    public PlayerResults makeApiRequest(ApiCallEntity apiCall) {
+    public PlayerResults makeApiRequest(ApiCallEntity apiCall) throws HttpClientErrorException {
         Player player = fetchPlayerByID(apiCall);
 
         List<Match> matchList = this.getMatchList(player.getPuuid());
-        return playerResultsService.providePlayerResults(matchList, player);
+        if(!matchList.isEmpty()) {
+            return playerResultsService.providePlayerResults(matchList, player);
+        }
+        else{
+            throw new InternalError();
+        }
     }
 
-    public List<Match> getMatchList(String puuid){
+    public List<Match> getMatchList(String puuid) throws HttpClientErrorException {
         return matchService.getMatchList(puuid);
     }
 

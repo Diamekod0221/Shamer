@@ -4,6 +4,7 @@ import com.lolshame.LoLShame.match.MatchResponse;
 import com.lolshame.LoLShame.player.PlayerService;
 import com.lolshame.LoLShame.player.results.PlayerResults;
 import com.lolshame.LoLShame.player.results.PlayerResultsService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -32,8 +32,8 @@ public class UserController {
     private final PlayerService playerService;
 
     @GetMapping(path = "/get-summoner/{summonerId}")
-    public String processRiotApiCallFront(@PathVariable String summonerId, Model model){
-        NewApiCall configuredInput = configureInput(summonerId);
+    public String processRiotApiCallFront(@PathVariable String summonerId, Model model) throws HttpClientErrorException, IllegalArgumentException{
+        NewApiCall configuredInput = NewApiCall.of(summonerId);
         boolean isSaved = checkIfSaved(configuredInput);
 
         if (isSaved) {
@@ -43,28 +43,20 @@ public class UserController {
             PlayerResults playerResults = fetchFromApi(configuredInput);
 
             model.addAttribute("playerResults", playerResults);
-            return "PlayerResultsTemplate";
+            return "player-results-template";
         }
     }
 
 
-
-    private NewApiCall configureInput(String summonerId) {
-        try {
-            return processInput(summonerId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Invalid summoner name, can't call. Summoner: "
-                    + summonerId + " was requested but not found."
-            );
-        }
+    @ExceptionHandler(HttpClientErrorException.class)
+    public String dataFetchingError(){
+        return "fetching-error";
     }
 
-    private NewApiCall processInput(String summonerId) {
-        NewApiCall apiCall = new NewApiCall(summonerId);
-        NewApiCallValidator.validate(apiCall);
-        return apiCall;
-    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public String invalidSummonerIdError(){return "bad-request";}
+
 
     private boolean checkIfSaved(NewApiCall configuredInput) {
         //todo: write select and check from db
@@ -78,10 +70,13 @@ public class UserController {
     }
 
 
-    private PlayerResults fetchFromApi(NewApiCall configuredInput) {
+    private PlayerResults fetchFromApi(NewApiCall configuredInput) throws HttpClientErrorException, InternalError {
         ApiCallEntity callEntity = new ApiCallEntity(configuredInput);
         return playerService.makeApiRequest(callEntity);
     }
+
+    @ExceptionHandler(InternalError.class)
+    public String noPlayerResultsError(){return "no-results-error";}
 
 }
 

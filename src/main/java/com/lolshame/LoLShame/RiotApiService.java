@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.*;
@@ -85,7 +86,7 @@ public class RiotApiService {
     }
 
 
-    public String fetchMatchData(String matchId) {
+    public String fetchMatchData(String matchId) throws HttpClientErrorException {
         HttpEntity<String> requestEntity = this.setUpRequestEntity();
 
         return restTemplate.exchange(matchIDUrl(matchId), HttpMethod.GET, requestEntity, String.class).getBody();
