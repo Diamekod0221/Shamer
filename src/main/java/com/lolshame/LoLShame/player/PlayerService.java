@@ -1,5 +1,6 @@
 package com.lolshame.LoLShame.player;
 
+import com.lolshame.LoLShame.caching.CacheService;
 import com.lolshame.LoLShame.controller.ApiCallEntity;
 import com.lolshame.LoLShame.RiotApiService;
 import com.lolshame.LoLShame.match.Match;
@@ -14,9 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
-
-
-//todo: persist players
 
 @Service
 @AllArgsConstructor
@@ -48,6 +46,7 @@ public class PlayerService {
     public Player fetchPlayerByID(ApiCallEntity callEntity){
         return apiService.fetchPlayerByID(callEntity.getSummonerId());
     }
+
 
 
 

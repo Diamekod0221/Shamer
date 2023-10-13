@@ -1,5 +1,6 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.fetching;
 
+import com.lolshame.LoLShame.RiotApiService;
 import com.lolshame.LoLShame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 public class DataFetchingTests {
 
     @Autowired
@@ -37,7 +37,7 @@ public class DataFetchingTests {
         builder = new RestTemplateBuilder();
         riotApiService = new RiotApiService(builder);
 
-        ReflectionTestUtils.setField(riotApiService, "apiKey", "RGAPI-466e9559-14ca-4d4b-942d-40da8547dac1");
+        ReflectionTestUtils.setField(riotApiService, "apiKey", "RGAPI-27f78110-6c22-4a76-a816-da56fbbffd12");
         ReflectionTestUtils.setField(riotApiService, "summonerByNameApiURL", "https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/");
         ReflectionTestUtils.setField(riotApiService, "matchesByPuuidApiURL", "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/");
         ReflectionTestUtils.setField(riotApiService, "matchesByIDApiURL", "https://europe.api.riotgames.com/lol/match/v5/matches/");

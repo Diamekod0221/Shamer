@@ -11,10 +11,11 @@ public record NewApiCall(String summonerId) {
         this.summonerId = summonerId;
     }
 
-//todo: write validator
     public static void validate(String summonerId) throws IllegalArgumentException{
         if(summonerId.isBlank() || summonerId.length() > 15){
             throw new IllegalArgumentException("Not a valid summoner name: " + summonerId);
         }
     }
+
+
 }

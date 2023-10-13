@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.user.interaction;
 
 import com.lolshame.LoLShame.controller.UserController;
 import org.junit.jupiter.api.Test;

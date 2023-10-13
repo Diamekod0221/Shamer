@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.fetching;
 
 import com.lolshame.LoLShame.match.Match;
 import com.lolshame.LoLShame.match.MatchService;

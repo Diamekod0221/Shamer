@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame;
+package com.lolshame.LoLShame.fetching;
 
 import com.lolshame.LoLShame.player.results.PlayerResultsService;
 import org.junit.jupiter.api.Test;

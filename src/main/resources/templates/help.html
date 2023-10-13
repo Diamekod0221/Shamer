@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shamer Help</title>
+</head>
+<body>
+<div>
+<h1>Help </h1>
+    <p>This app will take in a League of Legends player name and try to shame him based on his last week ranked performance.</p>
+        <p>Go to /shamer/get-summoner/{input_summoner_id}
+        The engine will try to fetch your required summoner from the RiotAPI database. If it does find him,
+        it will then calculate stats -
+    </p>
+    <ul>
+        <li>Alone? - average kill participation  </li>
+        <li>Poor? - average gold advantage  </li>
+        <li>Blind? - average vision advantage </li>
+        <li>Loser? - average win rate </li>
+    </ul>
+
+    <p> If more than two of those are negative - the summoner is shamed.</p>
+    <p>
+        Have fun!
+    </p>
+</div>
+<div>
+    <h2>
+        Fetching data
+    </h2>
+    <p>
+        All data is fetched from Riot's Europe servers - EUNE, EUW.
+    </p>
+    <p>Data is fetched from the last week, only from the ranked solo queue.</p>
+    <p>
+        If some data is corrupt and can't be parsed - it will be omitted in the final score.
+    </p>
+</div>
+
+</body>
+</html>

@@ -2,13 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Player Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaming <span th:text="${summonerId}"></span></title>
 </head>
 <body>
-<h1>Player Results</h1>
-<p>Kill Participation: <span th:text="${playerResults.killParticipation}"></span></p>
-<p>Gold Advantage at 15: <span th:text="${playerResults.goldAdvantageAt15}"></span></p>
-<p>Vision Score Advantage Lane Opponent: <span th:text="${playerResults.visionScoreAdvantageLaneOpponent}"></span></p>
-<p>Win: <span th:text="${playerResults.win} ? 'Yes' : 'No'"></span></p>
+
+<div>
+<h1>Results calculated for player: <span th:text="${summonerId}"></span></h1>
+    <ul>
+        <li>Alone?: <span th:text="${playerResults.get(&quot;alone&quot;)}"></span></li>
+        <li>Poor?: <span th:text="${playerResults.get(&quot;poor&quot;)}"></span></li>
+        <li>Blind?: <span th:text="${playerResults.get(&quot;blind&quot;)}"></span></li>
+        <li>Loser?: <span th:text="${playerResults.get(&quot;loser&quot;)}"></span></li>
+    </ul>
+</div>
+
+<div style="text-align: left;">
+    <h1>This summoner is: </h1>
+    <p th:text="${customString}"></p>
+    <img th:src="${imageUrl}" alt="Image">
+</div>
 </body>
 </html>

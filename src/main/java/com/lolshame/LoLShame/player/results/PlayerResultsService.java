@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collector;
 
 @Component
@@ -31,25 +33,30 @@ public class PlayerResultsService {
     }
 
     private PlayerMatchDetails getOpponentPerformance(Match match, String playerPuuid){
-        String opponentPuuid = findLaneOpponent(playerPuuid, match);
-        return match.getPlayerStats().get(opponentPuuid);
+        Optional<String> opponentPuuid = findLaneOpponent(playerPuuid, match);
+        return (opponentPuuid.isPresent() ?
+                match.getPlayerStats().get(opponentPuuid.get()) : new CorruptMatchDetails(playerPuuid));
     }
 
-    private String findLaneOpponent(String playerPuuid, Match match){
+    private Optional<String> findLaneOpponent(String playerPuuid, Match match){
         PlayerMatchDetails playerDetails = match.getPlayerStats().get(playerPuuid);
         PlayedLaneEnum playerLane = playerDetails.getLane();
         TeamColorEnum playerTeam = playerDetails.getTeam();
 
-        return match.getPlayerStats().entrySet().stream()
+        return Optional.of(
+                match.getPlayerStats().entrySet().stream()
                 .filter( v -> !(v.getValue().getTeam() == playerTeam))
                 .filter( v -> v.getValue().getLane() == playerLane)
                 .map(Map.Entry::getKey)
-                .collect(PlayerResultsService.singleElementCollector());
+                .collect(PlayerResultsService.singleElementCollector()));
     }
 
     private PlayerResults checkLaneAdvantage(PlayerMatchDetails playerMatchDetails, PlayerMatchDetails opponentPerformance){
         double killParticip = playerMatchDetails.getKillParticipation();
-        long goldAdvantage = goldAdvantage(playerMatchDetails, opponentPerformance);
+        long goldAdvantage = 0L;
+        if(!opponentPerformance.getClass().equals(CorruptMatchDetails.class)){
+            goldAdvantage = goldAdvantage(playerMatchDetails, opponentPerformance);
+        }
         double visionScoreAdvantage = visionScoreAdvantage(playerMatchDetails);
         boolean win = playerMatchDetails.isWin();
 

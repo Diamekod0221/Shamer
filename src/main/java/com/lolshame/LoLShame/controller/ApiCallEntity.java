@@ -1,12 +1,13 @@
 package com.lolshame.LoLShame.controller;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 import java.time.LocalDateTime;
 
@@ -16,8 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "calls")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class ApiCallEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,8 @@ public class ApiCallEntity{
     private LocalDateTime timestamp;
 
     @Autowired
-    public ApiCallEntity(NewApiCall summonerId){
-        this.summonerId = summonerId.summonerId();
+    public ApiCallEntity(NewApiCall summonerId) throws UnsupportedEncodingException {
+        this.summonerId = URLDecoder.decode(summonerId.summonerId(), StandardCharsets.UTF_8);
     }
 
 

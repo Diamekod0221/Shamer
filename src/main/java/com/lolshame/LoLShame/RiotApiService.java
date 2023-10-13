@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class RiotApiService {
     }
 
     public Player fetchPlayerByID(String summonerId){
-        return restTemplate.getForObject(summonerApiURL(summonerId), Player.class);
+        return restTemplate.getForObject(encodeUrl(summonerApiURL(summonerId)), Player.class);
     }
 
     private String summonerApiURL(String summonerId){
@@ -52,7 +54,8 @@ public class RiotApiService {
 
     public List<String> fetchMatchIds(String puuid){
         return restTemplate
-                .exchange(matchPuuidApiURL(puuid),
+                .exchange(
+                        encodeUrl(matchPuuidApiURL(puuid)),
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<List<String>>(){}
@@ -88,8 +91,9 @@ public class RiotApiService {
 
     public String fetchMatchData(String matchId) throws HttpClientErrorException {
         HttpEntity<String> requestEntity = this.setUpRequestEntity();
+        String url = encodeUrl(matchIDUrl(matchId));
 
-        return restTemplate.exchange(matchIDUrl(matchId), HttpMethod.GET, requestEntity, String.class).getBody();
+        return restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class).getBody();
     }
 
     private String matchIDUrl(String matchId){
@@ -104,6 +108,11 @@ public class RiotApiService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept","*/*");
         return new HttpEntity<>(headers);
+    }
+
+    private static String encodeUrl(String url){
+        return URLEncoder.encode(url, StandardCharsets.UTF_8);
+
     }
 
 
