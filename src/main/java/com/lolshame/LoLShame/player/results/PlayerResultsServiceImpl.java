@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collector;
 
 @Component
 @AllArgsConstructor
@@ -42,12 +41,11 @@ public class PlayerResultsServiceImpl implements PlayerResultsService {
         PlayedLaneEnum playerLane = playerDetails.getLane();
         TeamColorEnum playerTeam = playerDetails.getTeam();
 
-        return Optional.of(
-                match.getPlayerStats().entrySet().stream()
+                return match.getPlayerStats().entrySet().stream()
                 .filter( v -> !(v.getValue().getTeam() == playerTeam))
                 .filter( v -> v.getValue().getLane() == playerLane)
                 .map(Map.Entry::getKey)
-                .collect(PlayerResultsServiceImpl.singleElementCollector()));
+                        .findFirst();
     }
 
     private PlayerResults checkLaneAdvantage(PlayerMatchDetails playerMatchDetails, PlayerMatchDetails opponentPerformance){
@@ -77,31 +75,5 @@ public class PlayerResultsServiceImpl implements PlayerResultsService {
 
 
 
-    public static <T> Collector<T, ?, T> singleElementCollector() {
-        return Collector.of(
-                () -> {
-                    Object[] container = new Object[1];
-                    container[0] = null;
-                    return container;
-                },
-                (container, element) -> {
-                    if (container[0] == null) {
-                        container[0] = element;
-                    } else {
-                        throw new IllegalStateException("Multiple elements found in the stream.");
-                    }
-                },
-                (container1, container2) -> {
-                    if (container1[0] == null) {
-                        return container2;
-                    } else if (container2[0] == null) {
-                        return container1;
-                    } else {
-                        throw new IllegalStateException("Multiple elements found in the stream.");
-                    }
-                },
-                container -> (T) container[0]
-        );
-    }
 
 }

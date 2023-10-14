@@ -4,6 +4,7 @@ import com.lolshame.LoLShame.RiotApiService;
 import com.lolshame.LoLShame.caching.ApiCallEntity;
 import com.lolshame.LoLShame.match.Match;
 import com.lolshame.LoLShame.match.MatchService;
+import com.lolshame.LoLShame.player.results.EmptyPlayerResults;
 import com.lolshame.LoLShame.player.results.PlayerResults;
 import com.lolshame.LoLShame.player.results.PlayerResultsService;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class PlayerServiceImpl implements  PlayerService{
             return playerResultsServiceImpl.providePlayerResults(matchList, player);
         }
         else{
-            throw new InternalError();
+            return new EmptyPlayerResults();
         }
     }
 

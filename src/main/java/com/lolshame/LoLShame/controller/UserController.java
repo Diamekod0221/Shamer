@@ -3,6 +3,7 @@ package com.lolshame.LoLShame.controller;
 import com.lolshame.LoLShame.caching.ApiCallEntity;
 import com.lolshame.LoLShame.caching.CacheService;
 import com.lolshame.LoLShame.player.PlayerService;
+import com.lolshame.LoLShame.player.results.EmptyPlayerResults;
 import com.lolshame.LoLShame.player.results.PlayerResults;
 import com.lolshame.LoLShame.view.ViewService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,6 +56,9 @@ public class UserController {
             viewService.addDataSource(model, "ShamerDB");
         } else {
             playerResults = playerService.makeApiRequest(callEntity);
+            if(playerResults.getClass().equals(EmptyPlayerResults.class)){
+                return "not-enough-data";
+            }
             cacheService.saveResults(playerResults, callEntity.getSummonerId());
             viewService.addDataSource(model,"RiotApi");
 
