@@ -1,6 +1,6 @@
 package com.lolshame.LoLShame.fetching;
 
-import com.lolshame.LoLShame.RiotApiService;
+import com.lolshame.LoLShame.RiotApiServiceImpl;
 import com.lolshame.LoLShame.player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.DefaultResponseCreator;
@@ -27,7 +26,7 @@ public class DataFetchingTests {
     @Autowired
     private RestTemplateBuilder builder;
 
-    private RiotApiService riotApiService;
+    private RiotApiServiceImpl riotApiService;
 
     private MockRestServiceServer mockServer;
 
@@ -35,7 +34,7 @@ public class DataFetchingTests {
     @BeforeEach
     public void basicSetUp() {
         builder = new RestTemplateBuilder();
-        riotApiService = new RiotApiService(builder);
+        riotApiService = new RiotApiServiceImpl(builder);
 
         ReflectionTestUtils.setField(riotApiService, "apiKey", "RGAPI-27f78110-6c22-4a76-a816-da56fbbffd12");
         ReflectionTestUtils.setField(riotApiService, "summonerByNameApiURL", "https://eun1.api.riotgames.com/lol/summoner/v4/summoners/by-name/");

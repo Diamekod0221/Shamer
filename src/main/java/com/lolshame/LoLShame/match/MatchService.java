@@ -1,6 +1,7 @@
 package com.lolshame.LoLShame.match;
 
 import com.lolshame.LoLShame.RiotApiService;
+import com.lolshame.LoLShame.RiotApiServiceImpl;
 import com.lolshame.LoLShame.player.results.CorruptMatchDetails;
 import com.lolshame.LoLShame.player.results.PlayedLaneEnum;
 import com.lolshame.LoLShame.player.results.PlayerMatchDetails;

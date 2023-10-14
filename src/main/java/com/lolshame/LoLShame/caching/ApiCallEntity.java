@@ -1,5 +1,6 @@
-package com.lolshame.LoLShame.controller;
+package com.lolshame.LoLShame.caching;
 
+import com.lolshame.LoLShame.controller.NewApiCall;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(ApiCallEntityListener.class)
-@Table(name = "calls")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class ApiCallEntity{
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
     private String summonerId;

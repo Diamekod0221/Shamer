@@ -6,6 +6,6 @@ import java.util.List;
 
 @FunctionalInterface
 public interface ResultsCalculator {
-    public PlayerResults getResultsFromList(List<PlayerResults> resultsList);
+    PlayerResults getResultsFromList(List<PlayerResults> resultsList);
 
 }

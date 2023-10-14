@@ -2,8 +2,8 @@ package com.lolshame.LoLShame.cache;
 
 import com.lolshame.LoLShame.caching.CacheService;
 import com.lolshame.LoLShame.caching.CacheServiceImpl;
-import com.lolshame.LoLShame.controller.ApiCallEntity;
-import com.lolshame.LoLShame.player.results.PlayerResultsEntity;
+import com.lolshame.LoLShame.caching.ApiCallEntity;
+import com.lolshame.LoLShame.caching.PlayerResultsEntity;
 import com.lolshame.LoLShame.player.results.ResultsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +41,6 @@ public class CacheServiceTests {
     @Test
     public void testFetchingLogic(){
 
-
-
-        assertEquals(true, )
     }
 
 

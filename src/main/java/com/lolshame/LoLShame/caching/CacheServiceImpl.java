@@ -1,12 +1,11 @@
 package com.lolshame.LoLShame.caching;
 
-import com.lolshame.LoLShame.controller.ApiCallEntity;
 import com.lolshame.LoLShame.player.results.PlayerResults;
-import com.lolshame.LoLShame.player.results.PlayerResultsEntity;
 import com.lolshame.LoLShame.player.results.ResultsRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;
@@ -20,26 +19,28 @@ import java.util.Optional;
 @NoArgsConstructor
 public class CacheServiceImpl implements CacheService {
 
+    @Autowired
     private ResultsRepository repository;
 
+    @Autowired
     private Clock clock;
 
     @Override
     public boolean checkIfCanFetch(ApiCallEntity apiCall) {
         String id = apiCall.getSummonerId();
-        return checkIfSaved(id) || checkIfOutdated(id);
+        return checkIfSaved(id) && !checkIfOutdated(id);
     }
 
     private boolean checkIfSaved(String id){
-        return (repository.findById(id).isPresent());
+        return (repository.findByPlayerId(id).isPresent());
     }
 
     private boolean checkIfOutdated(String id){
-        Optional<PlayerResultsEntity> results = repository.findById(id);
+        Optional<PlayerResultsEntity> results = repository.findByPlayerId(id);
         if(results.isPresent()){
             boolean isOutdated = results.get().getTimestamp().isBefore(LocalDateTime.now(clock).minusDays(7L));
             if(isOutdated){
-                repository.deleteById(id);
+                repository.deleteByPlayerId(id);
                 return true;
             }
             else{
@@ -52,15 +53,21 @@ public class CacheServiceImpl implements CacheService {
 
     @Override
     public PlayerResults fetchSummonerFromDB(ApiCallEntity apiCall) {
-        Optional<PlayerResultsEntity> fetched = repository.findById(apiCall.getSummonerId());
+        Optional<PlayerResultsEntity> fetched = repository.findByPlayerId(apiCall.getSummonerId());
         return (fetched.map(PlayerResultsEntity::mapToResults).orElse(null));
     }
 
     @Override
-    public void saveResults(PlayerResults results) {
-        repository.save(results.mapToEntity());
+    public void saveResults(PlayerResults results, String playerId) {
+        PlayerResultsEntity entity = results.mapToEntity();
+        entity.setPlayerId(playerId);
+        this.saveResults(entity);
     }
 
+    @Override
+    public void saveResults(PlayerResultsEntity results) {
+        repository.save(results);
+    }
     @Override
     public List<PlayerResults> fetchResultsList() {
         return repository.findAll().stream().map(PlayerResultsEntity::mapToResults).toList();

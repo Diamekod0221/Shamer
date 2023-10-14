@@ -1,11 +1,10 @@
-package com.lolshame.LoLShame.player.results;
+package com.lolshame.LoLShame.caching;
 
-import com.lolshame.LoLShame.controller.ApiCallEntityListener;
+import com.lolshame.LoLShame.player.results.PlayerResults;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -15,15 +14,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "player_results")
+@Table(name = "player_results", uniqueConstraints = @UniqueConstraint(columnNames = {"playerId"}))
 public class PlayerResultsEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UuidGenerator
     private String id;
 
     @CreatedDate
     private LocalDateTime timestamp;
+
+    private String playerId;
 
     private double killParticipation;
 

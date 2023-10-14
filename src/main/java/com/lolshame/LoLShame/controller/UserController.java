@@ -1,5 +1,6 @@
 package com.lolshame.LoLShame.controller;
 
+import com.lolshame.LoLShame.caching.ApiCallEntity;
 import com.lolshame.LoLShame.caching.CacheService;
 import com.lolshame.LoLShame.player.PlayerService;
 import com.lolshame.LoLShame.player.results.PlayerResults;
@@ -35,7 +36,7 @@ public class UserController {
         return "welcome";
     }
 
-    @GetMapping(path = "/help")
+    @GetMapping(path = "/get-summoner")
     public String serveHelpPage(HttpServletRequest request){
         return "help";
     }
@@ -51,11 +52,19 @@ public class UserController {
         PlayerResults playerResults;
         if(cacheService.checkIfCanFetch(callEntity)) {
             playerResults = cacheService.fetchSummonerFromDB(callEntity);
+            viewService.addDataSource(model, "ShamerDB");
         } else {
             playerResults = playerService.makeApiRequest(callEntity);
-            cacheService.saveResults(playerResults);
+            cacheService.saveResults(playerResults, callEntity.getSummonerId());
+            viewService.addDataSource(model,"RiotApi");
+
         }
         return viewService.getResultsPage(model, playerResults);
+    }
+
+    @GetMapping(path = "/error")
+    public String errorPage(){
+        return "bad-request";
     }
 
 

@@ -1,4 +1,4 @@
-package com.lolshame.LoLShame.controller;
+package com.lolshame.LoLShame.caching;
 import jakarta.persistence.PrePersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

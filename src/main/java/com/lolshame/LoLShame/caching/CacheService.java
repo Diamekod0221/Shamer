@@ -1,6 +1,5 @@
 package com.lolshame.LoLShame.caching;
 
-import com.lolshame.LoLShame.controller.ApiCallEntity;
 import com.lolshame.LoLShame.player.results.PlayerResults;
 
 import java.util.List;
@@ -11,7 +10,9 @@ public interface CacheService {
 
     PlayerResults fetchSummonerFromDB(ApiCallEntity apiCall);
 
-    void saveResults(PlayerResults results);
+    void saveResults(PlayerResultsEntity results);
+
+    void saveResults(PlayerResults results, String playerId);
 
     List<PlayerResults> fetchResultsList();
 

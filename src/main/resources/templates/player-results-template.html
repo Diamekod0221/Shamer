@@ -3,24 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shaming <span th:text="${summonerId}"></span></title>
+    <title>Shaming</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Luminari', sans-serif;
+        }
+        ul {
+            text-align: center;
+            padding-left: 0;
+        }
+
+        li {
+            font-family: 'Luminari', sans-serif;
+            list-style: none;
+        }
+
+         h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h1 span {
+            font-size: 1.6em;
+            display: block;
+        }
+
+         h2 {
+            text-align: center;
+        }
+
+        h2 span {
+            font-size: 1.4em;
+            display: block;
+        }
+
+
+        img {
+            width: 300px;
+            height: auto;
+            display: auto;
+            margin: 0 auto;
+        }
+
+         span {
+            color: DarkMagenta;
+        }
+         p {
+            color: #666;
+            font-size: 16px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </head>
 <body>
 
 <div>
-<h1>Results calculated for player: <span th:text="${summonerId}"></span></h1>
+    <h1>Results calculated for player: <span th:text="${summonerId}"></span></h1>
     <ul>
-        <li>Alone?: <span th:text="${playerResults.get(&quot;alone&quot;)}"></span></li>
-        <li>Poor?: <span th:text="${playerResults.get(&quot;poor&quot;)}"></span></li>
-        <li>Blind?: <span th:text="${playerResults.get(&quot;blind&quot;)}"></span></li>
-        <li>Loser?: <span th:text="${playerResults.get(&quot;loser&quot;)}"></span></li>
+        <li>Alone? <span th:text="${playerResults.get(&quot;alone&quot)}" th:style="${playerResults.get(&quot;alone&quot)} == false ? 'color: green;' : 'color: red;'"></span></li>
+        <li>Poor? <span th:text="${playerResults.get(&quot;poor&quot)}" th:style="${playerResults.get(&quot;poor&quot)} == false ? 'color: green;' : 'color: red;'"></span></li>
+        <li>Blind? <span th:text="${playerResults.get(&quot;blind&quot)}" th:style="${playerResults.get(&quot;blind&quot)} == false ? 'color: green;' : 'color: red;'"></span></li>
+        <li>Loser? <span th:text="${playerResults.get(&quot;loser&quot)}" th:style="${playerResults.get(&quot;loser&quot)} == false ? 'color: green;' : 'color: red;'"></span></li>
     </ul>
 </div>
 
-<div style="text-align: left;">
-    <h1>This summoner is: </h1>
-    <p th:text="${customString}"></p>
+<div style="text-align: center;">
+    <h2>This summoner is: <span th:text="${customString}"></span> </h2>
     <img th:src="${imageUrl}" alt="Image">
+</div>
+
+<div style="text-align: center;">
+    <h3></h3>
+    <p>Data pulled from: <span th:text="${dataSource}"></span></p>
 </div>
 </body>
 </html>

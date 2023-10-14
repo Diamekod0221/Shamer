@@ -1,60 +1,17 @@
 package com.lolshame.LoLShame.player;
 
-import com.lolshame.LoLShame.caching.CacheService;
-import com.lolshame.LoLShame.controller.ApiCallEntity;
-import com.lolshame.LoLShame.RiotApiService;
+import com.lolshame.LoLShame.caching.ApiCallEntity;
 import com.lolshame.LoLShame.match.Match;
-import com.lolshame.LoLShame.match.MatchResponse;
-import com.lolshame.LoLShame.match.MatchService;
 import com.lolshame.LoLShame.player.results.PlayerResults;
-import com.lolshame.LoLShame.player.results.PlayerResultsService;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
-@Service
-@AllArgsConstructor
-public class PlayerService {
+public interface PlayerService {
 
-    private MatchService matchService;
+    PlayerResults makeApiRequest(ApiCallEntity apiCall) throws HttpClientErrorException;
 
-    private RiotApiService apiService;
+    List<Match> getMatchList(String puuid) throws HttpClientErrorException;
 
-    private PlayerResultsService playerResultsService;
-
-    public PlayerResults makeApiRequest(ApiCallEntity apiCall) throws HttpClientErrorException {
-        Player player = fetchPlayerByID(apiCall);
-
-        List<Match> matchList = this.getMatchList(player.getPuuid());
-        if(!matchList.isEmpty()) {
-            return playerResultsService.providePlayerResults(matchList, player);
-        }
-        else{
-            throw new InternalError();
-        }
-    }
-
-    public List<Match> getMatchList(String puuid) throws HttpClientErrorException {
-        return matchService.getMatchList(puuid);
-    }
-
-
-    public Player fetchPlayerByID(ApiCallEntity callEntity){
-        return apiService.fetchPlayerByID(callEntity.getSummonerId());
-    }
-
-
-
-
-
-
-
-
-
-
-
+    Player fetchPlayerByID(ApiCallEntity callEntity);
 }

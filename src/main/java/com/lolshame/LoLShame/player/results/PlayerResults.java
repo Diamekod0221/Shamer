@@ -1,10 +1,9 @@
 package com.lolshame.LoLShame.player.results;
 
-import jakarta.persistence.Entity;
+import com.lolshame.LoLShame.caching.PlayerResultsEntity;
 import lombok.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 
@@ -24,11 +23,16 @@ public class PlayerResults {
     private boolean win;
 
     public boolean areShamingResults(){
-        Collection<Boolean> resultList = booleanizeResults(this).values();
         return (
-                resultList.stream().mapToInt(v -> Boolean.compare(v, true)).sum() > 2
+                hasMoreThanNShameIndices(2) || !win
         ) ;
     }
+
+    private boolean hasMoreThanNShameIndices(int n){
+        Collection<Boolean> resultList = booleanizeResults(this).values();
+        return resultList.stream().mapToInt(v -> Boolean.compare(v, false)).sum() > n;
+    }
+
 
     public static Map<String, Boolean> booleanizeResults(PlayerResults results){
         return Map.of(

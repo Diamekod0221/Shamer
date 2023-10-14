@@ -1,6 +1,6 @@
 package com.lolshame.LoLShame.fetching;
 
-import com.lolshame.LoLShame.player.results.PlayerResultsService;
+import com.lolshame.LoLShame.player.results.PlayerResultsServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class PlayerResultsServiceTests {
 
         String expected = "abc";
 
-        String actual = input.stream().filter(v -> (v.equals("abc"))).collect(PlayerResultsService.singleElementCollector());
+        String actual = input.stream().filter(v -> (v.equals("abc"))).collect(PlayerResultsServiceImpl.singleElementCollector());
 
         assertEquals(expected, actual);
     }
@@ -25,7 +25,7 @@ public class PlayerResultsServiceTests {
     public void SingleElementCollectorThrowsIllegalStateException(){
 
         List<String> input = List.of("abc", "def", "fge"); assertThrows(IllegalStateException.class,
-                () -> {input.stream().collect(PlayerResultsService.singleElementCollector());},
+                () -> {input.stream().collect(PlayerResultsServiceImpl.singleElementCollector());},
                 "IllegalStateException expected");
     }
 }

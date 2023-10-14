@@ -8,13 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 public class Player {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long DBid;
     private String id;
     private String accountId;
     private String puuid;

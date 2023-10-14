@@ -1,7 +1,5 @@
-package com.lolshame.LoLShame.player.results;
+package com.lolshame.LoLShame.caching;
 
-import com.lolshame.LoLShame.controller.ApiCallEntity;
-import com.lolshame.LoLShame.controller.ApiCallEntityListener;
 import jakarta.persistence.PrePersist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
