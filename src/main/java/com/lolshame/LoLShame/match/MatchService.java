@@ -1,7 +1,6 @@
 package com.lolshame.LoLShame.match;
 
 import com.lolshame.LoLShame.RiotApiService;
-import com.lolshame.LoLShame.RiotApiServiceImpl;
 import com.lolshame.LoLShame.player.results.CorruptMatchDetails;
 import com.lolshame.LoLShame.player.results.PlayedLaneEnum;
 import com.lolshame.LoLShame.player.results.PlayerMatchDetails;
@@ -10,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,6 +60,10 @@ public class MatchService {
         Long timestamp = Long.parseLong(parse("gameStartTimestamp", response));
 
         List<String> playerSubstrings = extractPlayerSubstrings(response);
+        if(playerSubstrings.isEmpty()){
+            log.info("Failed when parsing for matchId: " + matchId + " omitting match.");
+            return new CorruptMatch(matchId);
+        }
         log.info("Extracted player substrings for matchId: "+ matchId);
 
         Map<String, PlayerMatchDetails> playerPerformanceStrings = computePlayerPerformanceMap(playerSubstrings);
@@ -109,6 +110,9 @@ public class MatchService {
         //skip first metadata group
         int index = 0;
         int indexEnd =  response.indexOf("allInPings", index);
+        if(indexEnd == -1){
+            return Collections.EMPTY_LIST;
+        }
         index = indexEnd;
 
 
