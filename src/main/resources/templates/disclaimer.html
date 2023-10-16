@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shamer Help</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+
+        li {
+            font-family: 'Arial', sans-serif;
+            list-style: none;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .section {
+            margin: 20px 0;
+        }
+         .content-wrapper {
+            text-align: center;
+            margin: 0 320px; /* Adjust the margin as needed for side indentation */
+        }
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <div class="content-wrapper">
+    <h2>Fetching and persisting data</h2>
+    <p>
+        All data is fetched from Riot's Europe server - EUNE.
+    </p>
+    <p> Data is fetched from the last week, only from the ranked queues.</p>
+    <p>
+        If some data is corrupt and can't be parsed - it will be omitted in the final score.
+    </p>
+    <p>
+        The engine will persist calculated data for a week and then fetch straight from a MySQL DB, based on the called
+        playerId. For presentation purposes - you can refresh the db.
+    </p>
+    <p>Want to refresh the database? <a href="/refresh-db">Click here</a></p>
+    </div>
+</div>
+
+<div class="section">
+    <div class="content-wrapper">
+    <h3>Disclaimer</h3>
+    <p>
+        This is a showcase app made for fun - I added some basic validation and testing so that it works ok and has
+        reasonable coverage, but don't expect it to be production-grade code. Especially since riot data can be
+        really faulty and drop random values. The app should work for most summoner names including european special
+        chars and whitespace names.
+    </p>
+    </div>
+</div>
+</body>
+</html>

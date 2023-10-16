@@ -6,12 +6,14 @@ import com.lolshame.LoLShame.player.PlayerService;
 import com.lolshame.LoLShame.player.results.EmptyPlayerResults;
 import com.lolshame.LoLShame.player.results.PlayerResults;
 import com.lolshame.LoLShame.view.ViewService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,7 +22,7 @@ import java.io.UnsupportedEncodingException;
 @Slf4j
 @AllArgsConstructor
 @Controller
-@RequestMapping("/shamer")
+@RequestMapping("/shamer/summoner")
 public class UserController {
 
 
@@ -32,15 +34,6 @@ public class UserController {
 
     private final ApiCallRepository callRepository;
 
-    @GetMapping(path = "/")
-    public String serveWelcomePage(){
-        return "welcome";
-    }
-
-    @GetMapping(path = "/get-summoner")
-    public String serveHelpPage(HttpServletRequest request){
-        return "help";
-    }
 
     @GetMapping(path = "/get-summoner/{summonerId:.+}")
     public String processRiotApiCallFront(@PathVariable String summonerId, Model model)
@@ -64,11 +57,6 @@ public class UserController {
 
         }
         return viewService.getResultsPage(model, playerResults);
-    }
-
-    @GetMapping(path = "/error")
-    public String errorPage(){
-        return "bad-request";
     }
 
 

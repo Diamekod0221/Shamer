@@ -29,13 +29,40 @@
         a:hover {
             text-decoration: underline;
         }
+        .section {
+            margin: 20px 0;
+        }
+         .content-wrapper {
+            text-align: center;
+            margin: 0 200px; /* Adjust the margin as needed for side indentation */
+        }
     </style>
+    <script>
+        function submitForm() {
+            var inputSummoner = document.getElementById("inputSummoner").value;
+            window.location.href = "/shamer/summoner/get-summoner/" + inputSummoner;
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            submitForm();
+        }
+    </script>
 </head>
 <body>
-<div>
-<h1>Help </h1>
+<div class="section">
+    <div class="content-wrapper">
+    <h1>Shaming</h1>
+    <p>
+    <form id="summonerForm" method="GET" onsubmit="handleFormSubmit(event)">
+        <label for="inputSummoner">Enter a Summoner Name:</label>
+        <input type="text" id="inputSummoner" name="inputSummoner">
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+    </p>
+
     <p>This app will take in a League of Legends player name and try to shame him based on his last week ranked performance.</p>
-        <p>Go to /shamer/get-summoner/{input_summoner_id}
+    <p>To use it - input the username (summoner id) into the field. Alternatively - go to /shamer/get-summoner/{input_summoner_id}
         The engine will try to fetch your required summoner from the RiotAPI database. If it does find him,
         it will then calculate stats -
     </p>
@@ -50,37 +77,18 @@
     <p>
         Have fun!
     </p>
-</div>
-<div>
-    <h2>
-        Fetching and persisting data
-    </h2>
-    <p>
-        All data is fetched from Riot's Europe servers - EUNE, EUW.
-    </p>
-    <p> Data is fetched from the last week, only from the ranked solo queue.</p>
-    <p>
-        If some data is corrupt and can't be parsed - it will be omitted in the final score.
-    </p>
-    <p>
-        The engine will persist calculated data for a week and then fetch straight from a MySQL DB, based on the called
-        playerId. For presentation purposes - you can refresh the db.
-    </p>
-    <p>Want to refresh the database? <a href="/refresh-db">Click here</a></p>
+    </div>
 
+    <div>
+        <p> <a href="/shamer/summoner/get-summoner/Diamekod">Try test pulling a summoner.</a></p>
+        <p><a href="https://www.leagueofgraphs.com/rankings/summoners/eune"> You can find some player usernames here.</a></p>
+    </div>
 </div>
 
 <div>
-    <h3>
-        Disclaimer
-    </h3>
-    <p>
-        This is a showcase app made for fun - I added some basic validation and testing so that it works ok and has
-        reasonable coverage, but don't expect it to be production-grade code. Especially since riot data can be
-        really faulty and drop random values. The app should work for most summoner names including european special
-        chars and whitespace names.
-    </p>
+    <p>For specifics about data fetching and additional info: <a href="/shamer/disclaimer">Go here</a></p>
 </div>
+
 
 </body>
 </html>
